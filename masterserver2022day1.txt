@@ -59,15 +59,15 @@ end
 
 @CiscoWireless:
 config t
-Dot11  ssid  winsMwifi
+Dot11  ssid  WIFIVLAN-21
  authentication open
  authentication key-management wpa
- wpa-psk  ascii  winser123
+ wpa-psk  ascii  aaaabbb123
  guest-mode  
 int dot11Radio 0
  no shut
  encryption mode ciphers tkip
- ssid  winsMwifi
+ ssid  WIFIVLAN-21
       
 ap>
 config t
