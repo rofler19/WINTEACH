@@ -1,0 +1,424 @@
+NO ip Helper-Address 10.21.1.0
+
+
+config t
+Dot11 ssid wins21wifi
+authentication open
+authentication key-management wpa
+wpa-psk ascii winser123
+guest-mode
+int dot11Radio 0
+no shut
+encryption mode ciphers tkip
+ssid wins21wifi
+
+
+cisco: vlan 10
+config t
+ip routing 
+int vlan 10
+ip Helper-Address 10.21.1.10
+end
+
+
+
+config t
+no Dot11 ssid winsMwifi
+authentication open
+authentication key-management wpa
+wpa-psk ascii winser123
+guest-mode
+int dot11Radio 0
+no shut
+encryption mode ciphers tkip
+no ssid winsMwifi
+
+cisco helper vlan50
+config t
+ip routing 
+int vlan 10
+ip Helper-Address 10.21.1.10
+end
+
+
+Task 8: Domain name syst/serv inst/config.
+1: powershell 
+
+uninstall-WindowsFeature -name dns -includemanagementtools
+uninstall-WindowsFeature -name dns -includemanagementtools
+
+w22.pinas21.gov.ph.
+cam1.pinas21.gov.ph.
+cam2.pinas21.gov.ph.
+pon1.pinas21.gov.ph.
+cme.pinas21.gov.ph.
+crb.pinas21.gov.ph.
+wap.pinas21.gov.ph.
+
+
+
+
+
+task8.1: advance dns config real world
+_____ empty Host/A
+Cname/ or alias for web,smtp,pop,imap
+MX 
+
+
+realName    Aliases:
+w22         www=web,smtp=sendemail,pop=getemail,imap=
+
+
+www.pinas21.gov.ph.
+w22.pinas21.gov.ph
+
+
+task9: inst & config web serv for apps
+powershell
+install-windowsFeature -name web-server - includemanagementTools
+
+sever manager>tools>ISS Manager(site creation)
+www.pinas21.gov.ph
+
+add-DnsServerResourceRecord -zonename gawako21.com -Cname -name bago -hostname w22.gawako21.com
+New-Website -name "PangApat" -hostheader "bago.gawako21.com" -physicalpath "d:\webs\appbiz"
+
+
+Task 10: inst ur own email server at ur office
+
+
+
+
+
+
+
+Day 2
+
+System admin
+task 1 :create 4 dhcp scopes
+Install-WindowsFeature -name dhcp -IncludeManagementTools
+
+task 2
+windowsserver as a ciscorouter (allow winserver to talk to all VLANS)
+cmd> route add 10.21.0.0 mask 255.255.0.0 10.21.1.4
+
+
+task 4 work IP Phones in Office
+1. correct winserver config
+sh run int vlan 100 
+
+Current configuration : 116 bytes
+!
+interface Vlan100
+ description VOICEVLAN
+ ip address 10.21.100.4 255.255.255.0
+ ip helper-address 10.21.1.10
+end
+
+2. correct cisc swct config
+3.corect  callManager config
+
+
+task 5
+Domain name system
+
+install dns config dns
+step1. dns= 127
+
+step 2. install DNS server windows
+Install-WindowsFeature -name dns -IncludeManagementTools
+
+step3. 
+
+task6 intall and  config own corporate website CMS
+Install-WindowsFeature -name web-server -IncludeManagementTools
+
+
+task7 netsecurity and DNS
+how to open port suspected dns > nslookup
+
+task8 secondary dns server for backup and redundancy.
+
+
+task9
+microsoft server as a cisco router replacement
+
+step1. 2 or more lan cards 4 nics
+
+go to> devmgmt.msc
+addlegacyhardware
+netqwrkadpter
+microsft
+kmtestloopbackadapter
+next,next,finish
+
+step2.
+Install
+
+
+
+
+server manage addd roles and features > next next next > remote access> next next next > direct access and routing > install
+
+
+tak10. Dynamic routing using bgp/rip and static routing
+.
+POWERSHELL ISE > (INCODE PC TO CONNECT TYPE THE CODE)
+#
+ROUTE ADD 10.11.0.0 MASK 255.255.0.0 10.3.3.11 
+ROUTE ADD 172.16.11.0 MASK 255.255.0.0 10.3.3.11
+#
+
+TO DELETE
+#
+ROUTE DELETE 10.11.0.0 MASK 
+ROUTE DELETE 172.16.11.0 
+# 
+
+and SAVE.
+
+
+task 10.1 Cisco use windows as router. 
+open SecureCRT>
+COREBABA
+config t 
+ip route 0.0.0.0 0.0.0.0 10.21.1.10
+end 
+exit ping 10.3.3.21
+
+COM 3 CUCM
+config t 
+ip route 0.0.0.0 0.0.0.0 10.21.100.4
+end 
+exit ping 10.3.3.21
+traceroute 10.41.100.8
+
+
+TASK11. WinServer as NAT (netwrk transltion router)
+
+step1. Winser should have internet
+step2. routing and remte access app at server manager 
+IPv4> General > new routing>NAT>
+
+POWERSHELL ISE CODE
+Get-NetFirewallProfile
+
+Server MANAGER Routing and Remote acces IPv4
+NAT>right click selct new interface>internet via wifi(internet source)>public (enable check)
+NAT>right click selct new interface>10211-10(where the lan)>private (enable check)
+
+
+TASK12. deplyng IPv6 in winserver.
+
+ab21:bc21:aa21:cccc:mm::ff99/64
+gw:ab21:bc21:aa21:cccc:mm::aa11
+
+dns: aaaa:bbbb:cccc:2121::aa11
+
+
+
+route add aaaa:bbbb:cccc:1111::/64 cafe:cafe:face:face::1111
+
+
+
+Task 13. confgure IPv6 DOMAIN
+S1: 
+
+
+route add 2020:2021:2021:2023::2024
+
+
+
+
+Day 3
+
+Task1.always verify connection thru ping
+
+Task2. how to route to other vlan
+
+route add 10.21.0.0 mask 255.255.0.0 10.21.1.4 -p
+
+
+"to activate videocal ipphone in securecrt under UCM"
+configure terminal
+ephone 1
+   video
+   voice service voip
+   h323
+   call start slow
+ephone 2
+   video
+   voice service voip
+   h323
+   call start slow
+end
+
+configure terminal
+voice service voip
+ip address trusted list
+ipv4 0.0.0.0 0.0.0.0
+exit
+
+"call other countries"
+configure terminal
+dial-peer voice 11 Voip
+destination-pattern 11..
+session target ipv4:10.11.100.8
+codec g711ULAW
+dial-peer voice 12 Voip
+ destination-pattern 12..
+ session target ipv4:10.12.100.8
+ codec g711ULAW
+!  dial-peer voice 21 Voip
+ ! destination-pattern 21..
+ ! session target ipv4:10.21.100.8
+ ! codec g711ULAW
+dial-peer voice 22 Voip
+ destination-pattern 22..
+ session target ipv4:10.22.100.8
+ codec g711ULAW
+dial-peer voice 31 Voip
+ destination-pattern 31..
+ session target ipv4:10.31.100.8
+ codec g711ULAW
+dial-peer voice 32 Voip
+ destination-pattern 32..
+ session target ipv4:10.32.100.8
+ codec g711ULAW
+dial-peer voice 41 Voip
+ destination-pattern 41..
+ session target ipv4:10.41.100.8
+ codec g711ULAW
+
+Task3. 
+"Corebaba di recognze as router > code SecureCRT Corebaba10.21.1.4)
+
+config t 
+ip route 0.0.0.0 0.0.0.0 10.21.1.10
+
+
+
+Task4. 
+install Hyper-V
+*2 or more LAN card
+*install KM-testloopbackAdapter at devmgmt
+*configure the "sacrifice NIC"
+*SSD atleast 100GB UP
+*RAM atleast 500GB UP
+
+S1: create folder at drive C > create _CONFIG > restart
+S2: tools servrmngr > 
+
+
+add hardware 
+
+
+
+S1: OID 
+
+
+
+DAY4  
+
+Task1: install Local AD vs Azure AD.
+
+rule 1= single ip
+2 = ADS wants own DNS
+uninstall-windowsfeature -name dns -includemanagement
+
+task 2 :install ADS 
+step 1: install 
+step 2: remote to domain controller
+step3: intall DNS by ADS
+
+task 4: post install task
+step1: check back up administratoor
+step2: ur ads muist frefleck
+
+
+task 5 always a secondary domain controller  secondary 
+step1
+
+
+
+
+recover-config
+
+
+
+ip dhcp excluded-add 10.21.10.1 10.21.10.100
+ip dhcp pool WIFIDATA
+network 10.21.10.0 255.255.255.0
+default-router 10.21.10.4
+domain-name WIFIDATA.COM
+dns-server 10.21.1.10
+
+Task 7. ADS control other brand
+
+servermanager>adddroles>select NetwrkPolicyAaccessServce>install
+
+route add 10.21.0.0 255.255.0.0 10.21.1.4 -p
+
+nps>radius>clients>new
+networkpolicies>new>next>add>windowsgroup>add group> next> unselect PAP/SPAP> next>
+
+C1sc0123
+
+Day 5
+
+
+task 1: to hide file or folder "hideme$"
+
+task2: unleashing ADS: Group Policy Objt/GPO
+
+task 3:
+1 password policy: C0nfi_d3nt
+2. Local policy:
+
+after edit run in cmd the code "GPUPDATE /FORCE"
+
+  eventvmr.msc
+
+Task4. GPO policy t contrl destrctive users:
+
+
+GPO Policy to deploy windows apps
+	.msi, not .exe
+step1.
+
+
+
+task7
+remotely administer servers. 
+on remote server
+powershell
+Configure-SMremoting  -enable
+Enable-PSremoting  -force
+
+How will remote manage your server, allow all to remote manager you:
+
+set-item  wsman:\localhost\Client\TrustedHosts  -value *   
+Y
+Set-Service WinRM -StartMode Automatic
+
+
+on your device 
+powershell ise
+
+$myip5  =  "192.168.m.5"
+     $cred5  =  Get-Credential
+     $con5 = New-PSsession -ComputerName $myip5 -credential $cred5
+     Get-Pssession    "look/remember the id "
+     Enter-Pssession  -id  1
+
+
+Task
+
+
+git clone https://github.com/rivancorp/windockers
+
+
+Powerhell CMD
+install-PackageProvider -name  NuGet
+install-module -name DockerMsftProvider
+install-package -name Docker -providername DockerMsftprovider -verbose -force
